@@ -1,0 +1,87 @@
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+export interface TaskRequest {
+  prompt: string;
+  options?: {
+    model?: string;
+    temperature?: number;
+    max_tokens?: number;
+  };
+}
+
+export interface TaskResponse {
+  id: string;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  message?: string;
+}
+
+export interface TaskStatus {
+  id: string;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  progress: number;
+  message?: string;
+  result?: unknown;
+  error?: string;
+}
+
+export class TaskflowAPI {
+  private baseUrl: string;
+
+  constructor(baseUrl: string = API_BASE_URL) {
+    this.baseUrl = baseUrl;
+  }
+
+  async createTask(request: TaskRequest): Promise<TaskResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating task:', error);
+      throw error;
+    }
+  }
+
+  async getTaskStatus(taskId: string): Promise<TaskStatus> {
+    try {
+      const response = await fetch(`${this.baseUrl}/tasks/${taskId}/status`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching task status:', error);
+      throw error;
+    }
+  }
+
+  async cancelTask(taskId: string): Promise<void> {
+    try {
+      const response = await fetch(`${this.baseUrl}/tasks/${taskId}/cancel`, {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error canceling task:', error);
+      throw error;
+    }
+  }
+}
+
+// Export a default instance
+export const taskflowAPI = new TaskflowAPI(); 
