@@ -1,0 +1,29 @@
+[project]
+name = "taskflow-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "chromadb>=1.0.15",
+    "elevenlabs>=2.7.1",
+    "fastapi>=0.116.1",
+    "httpx>=0.28.1",
+    "langchain>=0.3.26",
+    "langchain-openai>=0.3.28",
+    "langgraph>=0.5.3",
+    "openai>=1.97.0",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "python-multipart>=0.0.20",
+    "sqlalchemy>=2.0.41",
+    "tiktoken>=0.9.0",
+    "uvicorn>=0.35.0",
+    "whisper>=1.1.10",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=8.4.1",
+]
