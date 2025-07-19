@@ -4,7 +4,7 @@
 
 > *Type a request. Watch your plan unfold—step-by-step.*
 
-&#x20;
+Try it out! https://taskflow-one-gules.vercel.app/
 
 ---
 
@@ -136,19 +136,52 @@ cd taskflow
 
 # set up environment variables
 cp .env.example .env
+```
 
-# install backend dependencies
-pip install -r requirements.txt
+## 🚀 Running Locally
 
-# install frontend dependencies
+You have several options to run the application locally:
+
+### Option 1: Run Everything Together (Recommended)
+```bash
+# Start both frontend and backend with Docker Compose
+./start.sh
+
+# Stop all services
+./stop.sh
+```
+
+### Option 2: Run Services Individually
+```bash
+# Start backend only
+cd backend
+./start.sh
+
+# Start frontend only (in a separate terminal)
+cd frontend
+./start.sh
+```
+
+### Option 3: Manual Setup (Legacy)
+```bash
+# Install backend dependencies
+cd backend
+uv pip sync
+
+# Run backend
+uvicorn src.main:app --reload
+
+# Install frontend dependencies (in a separate terminal)
+cd frontend
 npm install
 
-# run backend
-uvicorn backend.main:app --reload
-
-# run frontend
+# Run frontend
 npm run dev
 ```
+
+**Access the application:**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
 
 ---
 
