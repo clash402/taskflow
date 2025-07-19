@@ -4,7 +4,7 @@ import { PromptBox } from '@/components/PromptBox';
 import { AgentStepTimeline } from '@/components/AgentStepTimeline';
 import { StatusBar } from '@/components/StatusBar';
 import { useTaskflow } from '@/hooks/useTaskflow';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type StepStatus = 'pending' | 'running' | 'completed' | 'failed';
 
@@ -17,20 +17,25 @@ interface Step {
 
 export default function Home() {
   const { isRunning, progress, status, message, startTask, resetTask } = useTaskflow();
-  const [steps, setSteps] = useState<Step[]>([
-    {
-      id: '1',
-      step: 'Initializing agent',
-      status: 'completed',
-      timestamp: new Date().toISOString()
-    },
-    {
-      id: '2',
-      step: 'Processing request',
-      status: 'pending',
-      timestamp: new Date().toISOString()
-    }
-  ]);
+  const [steps, setSteps] = useState<Step[]>([]);
+
+  // Initialize steps after component mounts to avoid hydration mismatch
+  useEffect(() => {
+    setSteps([
+      {
+        id: '1',
+        step: 'Initializing agent',
+        status: 'completed' as const,
+        timestamp: new Date().toISOString()
+      },
+      {
+        id: '2',
+        step: 'Processing request',
+        status: 'pending' as const,
+        timestamp: new Date().toISOString()
+      }
+    ]);
+  }, []);
 
   const handleSubmit = async (prompt: string) => {
     await startTask(prompt);
