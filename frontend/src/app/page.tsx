@@ -62,7 +62,7 @@ export default function Home() {
             TaskFlow
           </h1>
           <p className="text-muted-foreground text-lg">
-            AI-powered task automation platform
+            AI-powered task automation platform!
           </p>
         </div>
 
