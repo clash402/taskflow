@@ -37,6 +37,16 @@ export default function Home() {
       {/* Header */}
       <Header onReset={handleReset} />
       
+      {/* Status Bar - appears right below header when task is active */}
+      {(isRunning || status !== 'idle') && (
+        <StatusBar 
+          status={status} 
+          message={message} 
+          progress={progress}
+          tokenUsage={tokenUsage}
+        />
+      )}
+      
       {/* Main Content */}
       <main className="flex-1">
         <div className="taskflow-container py-8">
@@ -54,14 +64,6 @@ export default function Home() {
                 isVisible={true}
               />
             </div>
-
-            {/* Status Bar */}
-            <StatusBar 
-              status={status} 
-              message={message} 
-              progress={progress}
-              tokenUsage={tokenUsage}
-            />
 
             {/* Prompt Box */}
             <div className="taskflow-card">

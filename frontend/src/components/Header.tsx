@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onReset }) => {
   return (
-    <header className="w-full bg-white border-b border-gray-200 px-6 py-4">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="text-2xl">🔄</div>
