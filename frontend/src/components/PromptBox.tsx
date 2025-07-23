@@ -18,22 +18,25 @@ export const PromptBox: React.FC<PromptBoxProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl">
-      <div className="flex flex-col space-y-4">
-        <textarea
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter your task prompt here..."
-          className="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          rows={4}
-        />
-        <button
-          type="submit"
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Submit Task
-        </button>
-      </div>
-    </form>
+    <div className="taskflow-card">
+      <h2 className="text-xl font-semibold mb-4">Create New Task</h2>
+      <form onSubmit={handleSubmit} className="w-full">
+        <div className="flex flex-col space-y-4">
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Enter your task prompt here..."
+            className="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            rows={4}
+          />
+          <button
+            type="submit"
+            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            Submit Task
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }; 

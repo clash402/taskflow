@@ -8,6 +8,7 @@ import { ToolStatusDashboard } from '@/components/ToolStatusDashboard';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useTaskflow } from '@/hooks/useTaskflow';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   const { 
@@ -24,12 +25,22 @@ export default function Home() {
     updateDemoMode 
   } = useTaskflow();
 
+  const [isToolDashboardExpanded, setIsToolDashboardExpanded] = useState(false);
+
+  // Auto-expand tool dashboard when job starts
+  useEffect(() => {
+    if (isRunning && !isToolDashboardExpanded) {
+      setIsToolDashboardExpanded(true);
+    }
+  }, [isRunning, isToolDashboardExpanded]);
+
   const handleSubmit = async (prompt: string) => {
     await startTask(prompt);
   };
 
   const handleReset = () => {
     resetTask();
+    setIsToolDashboardExpanded(false); // Collapse dashboard when resetting
   };
 
   return (
@@ -57,18 +68,17 @@ export default function Home() {
               onSettingsChange={updateDemoMode}
             />
 
+            {/* Prompt Box - moved to top */}
+            <PromptBox onSubmit={handleSubmit} />
+
             {/* Tool Status Dashboard */}
             <div className="taskflow-card">
               <ToolStatusDashboard 
                 tools={toolStatuses}
                 isVisible={true}
+                isExpanded={isToolDashboardExpanded}
+                onToggleExpanded={() => setIsToolDashboardExpanded(!isToolDashboardExpanded)}
               />
-            </div>
-
-            {/* Prompt Box */}
-            <div className="taskflow-card">
-              <h2 className="text-xl font-semibold mb-4">Create New Task</h2>
-              <PromptBox onSubmit={handleSubmit} />
             </div>
 
             {/* Agent Reasoning Log */}
