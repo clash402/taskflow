@@ -42,6 +42,55 @@ export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, i
     return null;
   };
 
+  const getToolIcon = (toolName?: string) => {
+    if (!toolName) return null;
+    
+    const toolNameLower = toolName.toLowerCase();
+    
+    if (toolNameLower.includes('github')) {
+      return (
+        <div className="flex items-center space-x-1 bg-gray-800 text-white px-2 py-1 rounded text-xs">
+          <span>🐙</span>
+          <span>GitHub</span>
+        </div>
+      );
+    }
+    
+    if (toolNameLower.includes('slack')) {
+      return (
+        <div className="flex items-center space-x-1 bg-purple-600 text-white px-2 py-1 rounded text-xs">
+          <span>💬</span>
+          <span>Slack</span>
+        </div>
+      );
+    }
+    
+    if (toolNameLower.includes('openai') || toolNameLower.includes('gpt')) {
+      return (
+        <div className="flex items-center space-x-1 bg-green-600 text-white px-2 py-1 rounded text-xs">
+          <span>🤖</span>
+          <span>OpenAI</span>
+        </div>
+      );
+    }
+    
+    if (toolNameLower.includes('file') || toolNameLower.includes('local')) {
+      return (
+        <div className="flex items-center space-x-1 bg-blue-600 text-white px-2 py-1 rounded text-xs">
+          <span>📁</span>
+          <span>File System</span>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="flex items-center space-x-1 bg-gray-600 text-white px-2 py-1 rounded text-xs">
+        <span>🔧</span>
+        <span>{toolName}</span>
+      </div>
+    );
+  };
+
   const formatTimestamp = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString();
   };
@@ -97,9 +146,12 @@ export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, i
                 
                 {entry.tool_called && (
                   <div className="flex items-center space-x-2 mb-2">
-                    <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">
-                      Tool: {entry.tool_called}
-                    </span>
+                    {getToolIcon(entry.tool_called)}
+                    {entry.tool_called.includes('(SIMULATED)') && (
+                      <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                        Demo Mode
+                      </span>
+                    )}
                   </div>
                 )}
                 

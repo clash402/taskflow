@@ -4,6 +4,7 @@ import { PromptBox } from '@/components/PromptBox';
 import { AgentReasoningLog } from '@/components/AgentReasoningLog';
 import { StatusBar } from '@/components/StatusBar';
 import { DemoModeToggle } from '@/components/DemoModeToggle';
+import { ToolStatusDashboard } from '@/components/ToolStatusDashboard';
 import { useTaskflow } from '@/hooks/useTaskflow';
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
     tokenUsage, 
     agentLog, 
     demoMode,
+    toolStatuses,
     startTask, 
     resetTask,
     updateDemoMode 
@@ -42,6 +44,14 @@ export default function Home() {
             settings={demoMode}
             onSettingsChange={updateDemoMode}
           />
+
+          {/* Tool Status Dashboard */}
+          <div className="taskflow-card">
+            <ToolStatusDashboard 
+              tools={toolStatuses}
+              isVisible={true}
+            />
+          </div>
 
           {/* Status Bar */}
           <StatusBar 

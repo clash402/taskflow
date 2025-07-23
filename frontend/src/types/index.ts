@@ -137,4 +137,28 @@ export interface DemoModeSettings {
   externalActionsDisabled: boolean;
   mockExternalCalls: boolean;
   safetyMessage?: string;
+}
+
+export interface ToolStatus {
+  id: string;
+  name: string;
+  icon: string;
+  status: 'available' | 'in_use' | 'success' | 'error' | 'disabled' | 'not_configured';
+  lastUsed?: string;
+  errorMessage?: string;
+  callCount: number;
+  successCount: number;
+  isConfigured: boolean;
+  isDemoMode: boolean;
+}
+
+export interface ToolCall {
+  toolId: string;
+  toolName: string;
+  action: string;
+  timestamp: string;
+  status: 'pending' | 'running' | 'success' | 'error';
+  result?: string;
+  error?: string;
+  duration?: number;
 } 

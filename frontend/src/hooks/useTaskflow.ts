@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { TokenUsage } from '@/api/taskflow';
-import { AgentLogEntry, AgentReasoningLog, DemoModeSettings } from '@/types';
+import { AgentLogEntry, AgentReasoningLog, DemoModeSettings, ToolStatus, ToolCall } from '@/types';
 
 interface TaskflowState {
   isRunning: boolean;
@@ -10,6 +10,8 @@ interface TaskflowState {
   tokenUsage?: TokenUsage;
   agentLog?: AgentReasoningLog;
   demoMode: DemoModeSettings;
+  toolStatuses: ToolStatus[];
+  toolCalls: ToolCall[];
 }
 
 export const useTaskflow = () => {
@@ -21,7 +23,51 @@ export const useTaskflow = () => {
       enabled: true, // Default to demo mode for safety
       externalActionsDisabled: true,
       mockExternalCalls: true
-    }
+    },
+    toolStatuses: [
+      {
+        id: 'github',
+        name: 'GitHub API',
+        icon: '🐙',
+        status: 'available',
+        callCount: 0,
+        successCount: 0,
+        isConfigured: true,
+        isDemoMode: true
+      },
+      {
+        id: 'slack',
+        name: 'Slack Webhook',
+        icon: '💬',
+        status: 'not_configured',
+        callCount: 0,
+        successCount: 0,
+        isConfigured: false,
+        isDemoMode: true,
+        errorMessage: 'Webhook URL not configured'
+      },
+      {
+        id: 'openai',
+        name: 'OpenAI GPT-4',
+        icon: '🤖',
+        status: 'available',
+        callCount: 0,
+        successCount: 0,
+        isConfigured: true,
+        isDemoMode: true
+      },
+      {
+        id: 'filesystem',
+        name: 'File System',
+        icon: '📁',
+        status: 'available',
+        callCount: 0,
+        successCount: 0,
+        isConfigured: true,
+        isDemoMode: true
+      }
+    ],
+    toolCalls: []
   });
 
   const addLogEntry = useCallback((entry: AgentLogEntry) => {
@@ -39,10 +85,30 @@ export const useTaskflow = () => {
     }));
   }, []);
 
+  const updateToolStatus = useCallback((toolId: string, updates: Partial<ToolStatus>) => {
+    setState(prev => ({
+      ...prev,
+      toolStatuses: prev.toolStatuses.map(tool => 
+        tool.id === toolId ? { ...tool, ...updates } : tool
+      )
+    }));
+  }, []);
+
+  const addToolCall = useCallback((toolCall: ToolCall) => {
+    setState(prev => ({
+      ...prev,
+      toolCalls: [...prev.toolCalls, toolCall]
+    }));
+  }, []);
+
   const updateDemoMode = useCallback((newSettings: DemoModeSettings) => {
     setState(prev => ({
       ...prev,
-      demoMode: newSettings
+      demoMode: newSettings,
+      toolStatuses: prev.toolStatuses.map(tool => ({
+        ...tool,
+        isDemoMode: newSettings.enabled
+      }))
     }));
   }, []);
 
@@ -54,6 +120,16 @@ export const useTaskflow = () => {
       currentStep: 'initializing',
       isActive: true
     };
+
+    // Reset tool statuses for new task
+    const resetToolStatuses = state.toolStatuses.map(tool => ({
+      ...tool,
+      status: 'available' as const,
+      callCount: 0,
+      successCount: 0,
+      lastUsed: undefined,
+      errorMessage: undefined
+    }));
 
     setState(prev => ({
       ...prev,
@@ -67,7 +143,9 @@ export const useTaskflow = () => {
         total_tokens: 0,
         estimated_cost: 0.0
       },
-      agentLog: initialLog
+      agentLog: initialLog,
+      toolStatuses: resetToolStatuses,
+      toolCalls: []
     }));
 
     try {
@@ -126,9 +204,19 @@ export const useTaskflow = () => {
         });
       }, 3000);
 
-      // Simulate execution phase
+      // Simulate GitHub API call
       setTimeout(() => {
-        const toolCall = state.demoMode.externalActionsDisabled ? 'GitHub.create_repo (SIMULATED)' : 'GitHub.create_repo';
+        const toolCall: ToolCall = {
+          toolId: 'github',
+          toolName: 'GitHub API',
+          action: 'create_repo',
+          timestamp: new Date().toISOString(),
+          status: 'running'
+        };
+        addToolCall(toolCall);
+        updateToolStatus('github', { status: 'in_use', lastUsed: new Date().toISOString() });
+
+        const toolCallName = state.demoMode.externalActionsDisabled ? 'GitHub.create_repo (SIMULATED)' : 'GitHub.create_repo';
         const details = state.demoMode.externalActionsDisabled 
           ? 'Creating new repository (demo mode - no actual API call)'
           : 'Creating new repository...';
@@ -136,7 +224,7 @@ export const useTaskflow = () => {
         addLogEntry({
           id: '5',
           emoji: '🤖',
-          message: `Called: ${toolCall}`,
+          message: `Called: ${toolCallName}`,
           timestamp: new Date().toISOString(),
           type: 'action',
           tool_called: 'GitHub API',
@@ -145,6 +233,12 @@ export const useTaskflow = () => {
       }, 5000);
 
       setTimeout(() => {
+        updateToolStatus('github', { 
+          status: 'success', 
+          callCount: 1, 
+          successCount: 1 
+        });
+
         const result = state.demoMode.externalActionsDisabled 
           ? 'Repository URL: https://github.com/josh/josh-ai-sandbox (SIMULATED)'
           : 'Repository URL: https://github.com/josh/josh-ai-sandbox';
@@ -159,8 +253,25 @@ export const useTaskflow = () => {
         });
       }, 7000);
 
-      // Simulate a failure that triggers reflection
+      // Simulate Slack failure
       setTimeout(() => {
+        const toolCall: ToolCall = {
+          toolId: 'slack',
+          toolName: 'Slack Webhook',
+          action: 'post_message',
+          timestamp: new Date().toISOString(),
+          status: 'error',
+          error: '401 Unauthorized - authentication failed'
+        };
+        addToolCall(toolCall);
+        updateToolStatus('slack', { 
+          status: 'error', 
+          callCount: 1, 
+          successCount: 0,
+          lastUsed: new Date().toISOString(),
+          errorMessage: '401 Unauthorized - authentication failed'
+        });
+
         addLogEntry({
           id: '7',
           emoji: '⚠️',
@@ -195,8 +306,18 @@ export const useTaskflow = () => {
         });
       }, 10000);
 
-      // Continue with adjusted plan
+      // Simulate OpenAI call
       setTimeout(() => {
+        const toolCall: ToolCall = {
+          toolId: 'openai',
+          toolName: 'OpenAI GPT-4',
+          action: 'generate_content',
+          timestamp: new Date().toISOString(),
+          status: 'running'
+        };
+        addToolCall(toolCall);
+        updateToolStatus('openai', { status: 'in_use', lastUsed: new Date().toISOString() });
+
         addLogEntry({
           id: '10',
           emoji: '📝',
@@ -208,6 +329,12 @@ export const useTaskflow = () => {
       }, 11000);
 
       setTimeout(() => {
+        updateToolStatus('openai', { 
+          status: 'success', 
+          callCount: 1, 
+          successCount: 1 
+        });
+
         addLogEntry({
           id: '11',
           emoji: '✅',
@@ -218,8 +345,19 @@ export const useTaskflow = () => {
         });
       }, 12000);
 
+      // Simulate file system call
       setTimeout(() => {
-        const toolCall = state.demoMode.externalActionsDisabled ? 'Local File System (SIMULATED)' : 'Local File System';
+        const toolCall: ToolCall = {
+          toolId: 'filesystem',
+          toolName: 'File System',
+          action: 'write_file',
+          timestamp: new Date().toISOString(),
+          status: 'running'
+        };
+        addToolCall(toolCall);
+        updateToolStatus('filesystem', { status: 'in_use', lastUsed: new Date().toISOString() });
+
+        const toolCallName = state.demoMode.externalActionsDisabled ? 'Local File System (SIMULATED)' : 'Local File System';
         const details = state.demoMode.externalActionsDisabled 
           ? 'Generating task completion summary for local storage (demo mode - no actual file write)'
           : 'Generating task completion summary for local storage';
@@ -230,12 +368,18 @@ export const useTaskflow = () => {
           message: 'Creating local summary...',
           timestamp: new Date().toISOString(),
           type: 'action',
-          tool_called: toolCall,
+          tool_called: toolCallName,
           details: details
         });
       }, 13000);
 
       setTimeout(() => {
+        updateToolStatus('filesystem', { 
+          status: 'success', 
+          callCount: 1, 
+          successCount: 1 
+        });
+
         const result = state.demoMode.externalActionsDisabled 
           ? 'Summary saved to: /tmp/taskflow-summary-2024-01-15.txt (SIMULATED)'
           : 'Summary saved to: /tmp/taskflow-summary-2024-01-15.txt';
@@ -329,7 +473,7 @@ export const useTaskflow = () => {
         } : prev.agentLog
       }));
     }
-  }, [addLogEntry, state.demoMode]);
+  }, [addLogEntry, addToolCall, updateToolStatus, state.demoMode]);
 
   const resetTask = useCallback(() => {
     setState(prev => ({
