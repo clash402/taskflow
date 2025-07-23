@@ -5,6 +5,8 @@ import { AgentReasoningLog } from '@/components/AgentReasoningLog';
 import { StatusBar } from '@/components/StatusBar';
 import { DemoModeToggle } from '@/components/DemoModeToggle';
 import { ToolStatusDashboard } from '@/components/ToolStatusDashboard';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import { useTaskflow } from '@/hooks/useTaskflow';
 
 export default function Home() {
@@ -26,70 +28,74 @@ export default function Home() {
     await startTask(prompt);
   };
 
+  const handleReset = () => {
+    resetTask();
+  };
+
   return (
-    <main className="min-h-screen bg-background">
-      <div className="taskflow-container py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">
-            TaskFlow
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            AI-powered task automation platform!
-          </p>
-        </div>
-
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* Demo Mode Toggle */}
-          <DemoModeToggle 
-            settings={demoMode}
-            onSettingsChange={updateDemoMode}
-          />
-
-          {/* Tool Status Dashboard */}
-          <div className="taskflow-card">
-            <ToolStatusDashboard 
-              tools={toolStatuses}
-              isVisible={true}
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <Header onReset={handleReset} />
+      
+      {/* Main Content */}
+      <main className="flex-1">
+        <div className="taskflow-container py-8">
+          <div className="max-w-4xl mx-auto space-y-8">
+            {/* Demo Mode Toggle */}
+            <DemoModeToggle 
+              settings={demoMode}
+              onSettingsChange={updateDemoMode}
             />
-          </div>
 
-          {/* Status Bar */}
-          <StatusBar 
-            status={status} 
-            message={message} 
-            progress={progress}
-            tokenUsage={tokenUsage}
-          />
-
-          {/* Prompt Box */}
-          <div className="taskflow-card">
-            <h2 className="text-xl font-semibold mb-4">Create New Task</h2>
-            <PromptBox onSubmit={handleSubmit} />
-          </div>
-
-          {/* Agent Reasoning Log */}
-          {agentLog && (
+            {/* Tool Status Dashboard */}
             <div className="taskflow-card">
-              <AgentReasoningLog 
-                entries={agentLog.entries} 
-                isActive={agentLog.isActive}
+              <ToolStatusDashboard 
+                tools={toolStatuses}
+                isVisible={true}
               />
             </div>
-          )}
 
-          {/* Reset Button */}
-          {status === 'completed' && (
-            <div className="text-center">
-              <button
-                onClick={resetTask}
-                className="taskflow-button-secondary"
-              >
-                Start New Task
-              </button>
+            {/* Status Bar */}
+            <StatusBar 
+              status={status} 
+              message={message} 
+              progress={progress}
+              tokenUsage={tokenUsage}
+            />
+
+            {/* Prompt Box */}
+            <div className="taskflow-card">
+              <h2 className="text-xl font-semibold mb-4">Create New Task</h2>
+              <PromptBox onSubmit={handleSubmit} />
             </div>
-          )}
+
+            {/* Agent Reasoning Log */}
+            {agentLog && (
+              <div className="taskflow-card">
+                <AgentReasoningLog 
+                  entries={agentLog.entries} 
+                  isActive={agentLog.isActive}
+                />
+              </div>
+            )}
+
+            {/* Reset Button */}
+            {status === 'completed' && (
+              <div className="text-center">
+                <button
+                  onClick={resetTask}
+                  className="taskflow-button-secondary"
+                >
+                  Start New Task
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 }
