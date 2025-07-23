@@ -105,4 +105,36 @@ export interface FileUpload {
   progress: number;
   status: 'uploading' | 'completed' | 'failed';
   url?: string;
+}
+
+export interface Step {
+  id: string;
+  step: string;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  timestamp: string;
+}
+
+export interface AgentLogEntry {
+  id: string;
+  emoji: string;
+  message: string;
+  timestamp: string;
+  type: 'info' | 'success' | 'error' | 'warning' | 'action' | 'reflection';
+  details?: string;
+  tool_called?: string;
+  result?: string;
+}
+
+export interface AgentReasoningLog {
+  taskId: string;
+  entries: AgentLogEntry[];
+  currentStep: string;
+  isActive: boolean;
+}
+
+export interface DemoModeSettings {
+  enabled: boolean;
+  externalActionsDisabled: boolean;
+  mockExternalCalls: boolean;
+  safetyMessage?: string;
 } 

@@ -1,57 +1,27 @@
 'use client';
 
 import { PromptBox } from '@/components/PromptBox';
-import { AgentStepTimeline } from '@/components/AgentStepTimeline';
+import { AgentReasoningLog } from '@/components/AgentReasoningLog';
 import { StatusBar } from '@/components/StatusBar';
+import { DemoModeToggle } from '@/components/DemoModeToggle';
 import { useTaskflow } from '@/hooks/useTaskflow';
-import { useState, useEffect } from 'react';
-
-type StepStatus = 'pending' | 'running' | 'completed' | 'failed';
-
-interface Step {
-  id: string;
-  step: string;
-  status: StepStatus;
-  timestamp: string;
-}
 
 export default function Home() {
-  const { isRunning, progress, status, message, startTask, resetTask } = useTaskflow();
-  const [steps, setSteps] = useState<Step[]>([]);
-
-  // Initialize steps after component mounts to avoid hydration mismatch
-  useEffect(() => {
-    setSteps([
-      {
-        id: '1',
-        step: 'Initializing agent',
-        status: 'completed' as const,
-        timestamp: new Date().toISOString()
-      },
-      {
-        id: '2',
-        step: 'Processing request',
-        status: 'pending' as const,
-        timestamp: new Date().toISOString()
-      }
-    ]);
-  }, []);
+  const { 
+    isRunning, 
+    progress, 
+    status, 
+    message, 
+    tokenUsage, 
+    agentLog, 
+    demoMode,
+    startTask, 
+    resetTask,
+    updateDemoMode 
+  } = useTaskflow();
 
   const handleSubmit = async (prompt: string) => {
     await startTask(prompt);
-    
-    // Simulate step updates
-    setTimeout(() => {
-      setSteps(prev => prev.map(step => 
-        step.id === '2' ? { ...step, status: 'running' } : step
-      ));
-    }, 2000);
-
-    setTimeout(() => {
-      setSteps(prev => prev.map(step => 
-        step.id === '2' ? { ...step, status: 'completed' } : step
-      ));
-    }, 8000);
   };
 
   return (
@@ -67,11 +37,18 @@ export default function Home() {
         </div>
 
         <div className="max-w-4xl mx-auto space-y-8">
+          {/* Demo Mode Toggle */}
+          <DemoModeToggle 
+            settings={demoMode}
+            onSettingsChange={updateDemoMode}
+          />
+
           {/* Status Bar */}
           <StatusBar 
             status={status} 
             message={message} 
-            progress={progress} 
+            progress={progress}
+            tokenUsage={tokenUsage}
           />
 
           {/* Prompt Box */}
@@ -80,10 +57,13 @@ export default function Home() {
             <PromptBox onSubmit={handleSubmit} />
           </div>
 
-          {/* Agent Steps Timeline */}
-          {isRunning && (
+          {/* Agent Reasoning Log */}
+          {agentLog && (
             <div className="taskflow-card">
-              <AgentStepTimeline steps={steps} />
+              <AgentReasoningLog 
+                entries={agentLog.entries} 
+                isActive={agentLog.isActive}
+              />
             </div>
           )}
 

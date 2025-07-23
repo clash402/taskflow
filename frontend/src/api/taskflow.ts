@@ -1,5 +1,12 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+export interface TokenUsage {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+  estimated_cost: number;
+}
+
 export interface TaskRequest {
   prompt: string;
   options?: {
@@ -22,6 +29,7 @@ export interface TaskStatus {
   message?: string;
   result?: unknown;
   error?: string;
+  token_usage?: TokenUsage;
 }
 
 export class TaskflowAPI {
