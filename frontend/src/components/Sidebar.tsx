@@ -16,7 +16,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) =
         aria-hidden="true"
       />
       <aside
-        className={`fixed top-0 left-0 h-full w-72 bg-white border-r border-gray-200 z-50 transform transition-transform duration-200 flex-col block sm:hidden
+        className={`fixed top-0 left-0 h-full w-72 bg-white border-r border-gray-200 z-50 transform transition-transform duration-200 flex flex-col block sm:hidden
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
         style={{ maxWidth: 320 }}
@@ -32,7 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) =
             <span className="text-2xl">×</span>
           </button>
         </div>
-        <div className="p-4 flex-1 overflow-y-auto">
+        <div className="p-4 flex-1 overflow-y-auto h-full">
           {children}
         </div>
       </aside>
