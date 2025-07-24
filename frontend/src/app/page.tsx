@@ -27,13 +27,6 @@ export default function Home() {
 
   const [isToolDashboardExpanded, setIsToolDashboardExpanded] = useState(false);
 
-  // Auto-expand tool dashboard when job starts
-  useEffect(() => {
-    if (isRunning && !isToolDashboardExpanded) {
-      setIsToolDashboardExpanded(true);
-    }
-  }, [isRunning, isToolDashboardExpanded]);
-
   const handleSubmit = async (prompt: string) => {
     await startTask(prompt);
   };

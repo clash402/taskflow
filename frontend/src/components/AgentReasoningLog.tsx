@@ -9,6 +9,15 @@ interface AgentReasoningLogProps {
 }
 
 export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, isActive = false }) => {
+  const logContainerRef = React.useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when new entries are added
+  React.useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [entries]);
+
   const getTypeColor = (type: AgentLogEntry['type']) => {
     switch (type) {
       case 'success': return 'text-green-600';
@@ -110,8 +119,24 @@ export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, i
           </div>
         )}
       </div>
+
+      {/* Reflection Summary - moved to top */}
+      {entries.some(entry => isReflectionStep(entry)) && (
+        <>
+          <div className="mb-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+            <div className="flex items-center space-x-2 mb-2">
+              <div className="text-purple-600">🧠</div>
+              <h4 className="font-medium text-purple-800">Reflection Summary</h4>
+            </div>
+            <p className="text-sm text-purple-700">
+              The agent detected a failure and automatically adjusted the execution plan to complete the task successfully.
+            </p>
+          </div>
+          <hr className="border-t border-purple-200 mb-4" />
+        </>
+      )}
       
-      <div className="space-y-3 max-h-96 overflow-y-auto">
+      <div ref={logContainerRef} className="space-y-3 max-h-96 overflow-y-auto">
         {entries.map((entry, idx) => (
           <div
             key={`${entry.id}-${entry.timestamp}-${idx}`}
@@ -185,19 +210,6 @@ export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, i
           </div>
         )}
       </div>
-
-      {/* Reflection Summary */}
-      {entries.some(entry => isReflectionStep(entry)) && (
-        <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
-          <div className="flex items-center space-x-2 mb-2">
-            <div className="text-purple-600">🧠</div>
-            <h4 className="font-medium text-purple-800">Reflection Summary</h4>
-          </div>
-          <p className="text-sm text-purple-700">
-            The agent detected a failure and automatically adjusted the execution plan to complete the task successfully.
-          </p>
-        </div>
-      )}
     </div>
   );
 }; 
