@@ -66,7 +66,7 @@ export default function Home() {
           />
         </Sidebar>
         {/* Main Content */}
-        <main className="flex-1">
+        <main className="flex-1 h-full overflow-y-auto">
           <div className="taskflow-container py-8">
             <div className="max-w-4xl mx-auto space-y-8">
               {/* Sidebar Toggle Button (visible on mobile and desktop) */}
@@ -92,17 +92,6 @@ export default function Home() {
                     entries={agentLog.entries} 
                     isActive={agentLog.isActive}
                   />
-                </div>
-              )}
-              {/* Reset Button */}
-              {status === 'completed' && (
-                <div className="text-center">
-                  <button
-                    onClick={resetTask}
-                    className="taskflow-button-secondary"
-                  >
-                    Start New Task
-                  </button>
                 </div>
               )}
             </div>
