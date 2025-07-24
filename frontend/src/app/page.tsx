@@ -38,11 +38,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="flex flex-col min-h-screen h-screen">
       {/* Header */}
       <Header onReset={handleReset} />
-      
-      {/* Status Bar - appears right below header when task is active */}
+      {/* Status Bar */}
       {(isRunning || status !== 'idle') && (
         <StatusBar 
           status={status} 
@@ -51,10 +50,8 @@ export default function Home() {
           tokenUsage={tokenUsage}
         />
       )}
-      
       {/* Main Layout with Sidebar */}
-      <div className="flex flex-1">
-        {/* Sidebar (Tool Status Dashboard) */}
+      <div className="flex flex-1 min-h-0">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
           <div className="flex items-center justify-between mb-4">
             <div className="text-xs text-gray-500">
@@ -65,7 +62,6 @@ export default function Home() {
             tools={toolStatuses}
           />
         </Sidebar>
-        {/* Main Content */}
         <main className="flex-1 h-full overflow-y-auto">
           <div className="taskflow-container py-8">
             <div className="max-w-4xl mx-auto space-y-8">
