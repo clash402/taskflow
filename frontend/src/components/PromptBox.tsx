@@ -8,12 +8,42 @@ interface PromptBoxProps {
 
 export const PromptBox: React.FC<PromptBoxProps> = ({ onSubmit }) => {
   const [prompt, setPrompt] = React.useState('');
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSubmit && prompt.trim()) {
       onSubmit(prompt.trim());
       setPrompt('');
+      // Reset textarea height after submission
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
+    }
+  };
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setPrompt(value);
+    
+    // Auto-resize textarea
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (prompt.trim()) {
+        onSubmit?.(prompt.trim());
+        setPrompt('');
+        // Reset textarea height after submission
+        if (textareaRef.current) {
+          textareaRef.current.style.height = 'auto';
+        }
+      }
     }
   };
 
@@ -23,11 +53,13 @@ export const PromptBox: React.FC<PromptBoxProps> = ({ onSubmit }) => {
       <form onSubmit={handleSubmit} className="w-full">
         <div className="flex flex-col space-y-4">
           <textarea
+            ref={textareaRef}
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={handleTextareaChange}
+            onKeyDown={handleKeyDown}
             placeholder="Enter your task prompt here..."
-            className="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            rows={4}
+            className="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[44px] max-h-[300px] overflow-y-auto"
+            rows={1}
           />
           <button
             type="submit"

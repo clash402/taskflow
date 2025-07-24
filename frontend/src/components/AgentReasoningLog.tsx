@@ -112,9 +112,9 @@ export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, i
       </div>
       
       <div className="space-y-3 max-h-96 overflow-y-auto">
-        {entries.map((entry) => (
+        {entries.map((entry, idx) => (
           <div
-            key={entry.id}
+            key={`${entry.id}-${entry.timestamp}-${idx}`}
             className={`relative p-3 rounded-lg border transition-all duration-200 hover:shadow-sm ${
               getTypeBackground(entry.type)
             } ${
