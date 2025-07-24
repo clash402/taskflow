@@ -38,17 +38,7 @@ export const ToolStatusDashboard: React.FC<ToolStatusDashboardProps> = ({
     }
   };
 
-  const getStatusText = (status: ToolStatus['status']) => {
-    switch (status) {
-      case 'available': return 'Available';
-      case 'in_use': return 'In Use';
-      case 'success': return 'Success';
-      case 'error': return 'Error';
-      case 'disabled': return 'Disabled';
-      case 'not_configured': return 'Not Configured';
-      default: return 'Unknown';
-    }
-  };
+
 
   if (!isVisible) return null;
 

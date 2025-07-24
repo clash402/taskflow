@@ -8,7 +8,7 @@ import { ToolStatusDashboard } from '@/components/ToolStatusDashboard';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useTaskflow } from '@/hooks/useTaskflow';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 
 export default function Home() {
