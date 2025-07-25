@@ -16,12 +16,12 @@ export const ToolStatusDashboard: React.FC<ToolStatusDashboardProps> = ({
 }) => {
   const getStatusColor = (status: ToolStatus['status']) => {
     switch (status) {
-      case 'available': return 'text-green-700 bg-green-50/50 border-green-200';
+      case 'available': return 'status-success';
       case 'in_use': return 'text-accent bg-accent/10 border-accent/20';
-      case 'success': return 'text-green-700 bg-green-50/50 border-green-200';
-      case 'error': return 'text-destructive bg-destructive/10 border-destructive/20';
+      case 'success': return 'status-success';
+      case 'error': return 'status-error';
       case 'disabled': return 'text-muted-foreground bg-muted border-border';
-      case 'not_configured': return 'text-amber-700 bg-amber-50/50 border-amber-200';
+      case 'not_configured': return 'status-warning';
       default: return 'text-muted-foreground bg-muted border-border';
     }
   };

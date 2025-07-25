@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({ onReset }) => {
             </svg>
           </div>
           <div className="flex items-center space-x-2">
-            <h1 className="text-xl font-bold text-foreground">LOOP</h1>
+            <h1 className="text-xl font-bold text-foreground">LOOP by TaskFlow</h1>
             <span className="text-xs text-muted-foreground font-mono">v1.0</span>
           </div>
         </div>

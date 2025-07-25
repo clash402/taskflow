@@ -20,9 +20,9 @@ export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, i
 
   const getTypeColor = (type: AgentLogEntry['type']) => {
     switch (type) {
-      case 'success': return 'text-green-700';
+      case 'success': return 'text-green-700 dark:text-green-300';
       case 'error': return 'text-destructive';
-      case 'warning': return 'text-amber-700';
+      case 'warning': return 'text-amber-700 dark:text-amber-300';
       case 'action': return 'text-accent';
       case 'reflection': return 'text-loop-ultraviolet';
       default: return 'text-muted-foreground';
@@ -31,9 +31,9 @@ export const AgentReasoningLog: React.FC<AgentReasoningLogProps> = ({ entries, i
 
   const getTypeBackground = (type: AgentLogEntry['type']) => {
     switch (type) {
-      case 'success': return 'bg-green-50/50 border-green-200';
-      case 'error': return 'bg-destructive/10 border-destructive/20';
-      case 'warning': return 'bg-amber-50/50 border-amber-200';
+      case 'success': return 'status-success';
+      case 'error': return 'status-error';
+      case 'warning': return 'status-warning';
       case 'action': return 'bg-accent/10 border-accent/20';
       case 'reflection': return 'bg-loop-ultraviolet/10 border-loop-ultraviolet/20';
       default: return 'bg-muted border-border';
