@@ -29,6 +29,17 @@
   --loop-mint: 160 84% 39%; /* Mint green */
   --loop-ultraviolet: 250 95% 60%; /* Ultraviolet */
   --loop-glow: 199 89% 48%; /* Electric blue glow */
+
+  /* Status Colors - Light Mode */
+  --status-success-text: 142 76% 25%; /* Darker green for better readability */
+  --status-success-bg: 142 76% 97%; /* Green-50/50 */
+  --status-success-border: 142 76% 84%; /* Green-200 */
+  --status-warning-text: 38 92% 35%; /* Darker amber for better readability */
+  --status-warning-bg: 38 92% 97%; /* Amber-50/50 */
+  --status-warning-border: 38 92% 84%; /* Amber-200 */
+  --status-error-text: 0 84% 60%; /* Destructive */
+  --status-error-bg: 0 84% 97%; /* Destructive/10 */
+  --status-error-border: 0 84% 84%; /* Destructive/20 */
 }
 
 .dark {
@@ -57,6 +68,17 @@
   --loop-mint: 160 84% 45%; /* Brighter mint for dark mode */
   --loop-ultraviolet: 250 95% 70%; /* Brighter ultraviolet for dark mode */
   --loop-glow: 199 89% 60%; /* Brighter electric blue glow */
+
+  /* Status Colors - Dark Mode */
+  --status-success-text: 142 76% 76%; /* Green-300 */
+  --status-success-bg: 142 76% 10%; /* Green-900/10 */
+  --status-success-border: 142 76% 25%; /* Green-800 */
+  --status-warning-text: 38 92% 76%; /* Amber-300 */
+  --status-warning-bg: 38 92% 10%; /* Amber-900/10 */
+  --status-warning-border: 38 92% 25%; /* Amber-800 */
+  --status-error-text: 0 84% 60%; /* Destructive */
+  --status-error-bg: 0 84% 10%; /* Destructive/10 */
+  --status-error-border: 0 84% 20%; /* Destructive/20 */
 }
 
 @layer base {
@@ -143,6 +165,25 @@
 
   .loop-avatar {
     @apply w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent/80 flex items-center justify-center text-white font-bold text-sm;
+  }
+
+  /* Status classes using CSS variables */
+  .status-success {
+    color: hsl(var(--status-success-text));
+    background-color: hsl(var(--status-success-bg));
+    border-color: hsl(var(--status-success-border));
+  }
+
+  .status-warning {
+    color: hsl(var(--status-warning-text));
+    background-color: hsl(var(--status-warning-bg));
+    border-color: hsl(var(--status-warning-border));
+  }
+
+  .status-error {
+    color: hsl(var(--status-error-text));
+    background-color: hsl(var(--status-error-bg));
+    border-color: hsl(var(--status-error-border));
   }
 }
 
