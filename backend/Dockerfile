@@ -5,17 +5,20 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install uv
-RUN pip install uv
-
 # Set the working directory
 WORKDIR /app
 
-# Copy project files
-COPY . .
+# Copy project files first
+COPY pyproject.toml uv.lock ./
 
-# Sync and install dependencies using uv
-RUN uv pip sync
+# Install uv and generate requirements.txt
+RUN pip install uv && uv pip compile pyproject.toml --output-file requirements.txt
+
+# Install dependencies using pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the project files
+COPY . .
 
 # Expose port (Fly expects 8000)
 EXPOSE 8000

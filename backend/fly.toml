@@ -10,7 +10,7 @@ primary_region = 'iad'
   auto_rollback = true
 
 [build]
-  image = 'python:3.11-slim'
+  dockerfile = "Dockerfile"
 
 [env]
   PORT = '8000'
