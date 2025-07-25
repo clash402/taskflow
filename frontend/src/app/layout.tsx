@@ -21,6 +21,25 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png',
   },
+  openGraph: {
+    title: "TaskFlow - AI-powered task automation",
+    description: "AI-powered task automation platform",
+    images: [
+      {
+        url: '/share-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'TaskFlow - AI-powered task automation',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "TaskFlow - AI-powered task automation",
+    description: "AI-powered task automation platform",
+    images: ['/share-image.png'],
+  },
 };
 
 export default function RootLayout({
