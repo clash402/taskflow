@@ -47,7 +47,7 @@ app.include_router(status.router, prefix="/api/v1", tags=["status"])
 async def root():
     """Health check endpoint"""
     return {
-        "message": "TaskFlow API is running!",
+        "message": "TaskFlow API is running",
         "version": "1.0.0",
         "status": "healthy",
     }
