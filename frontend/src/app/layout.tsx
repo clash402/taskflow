@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "TaskFlow - AI-powered task automation",
   description: "AI-powered task automation platform",
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
