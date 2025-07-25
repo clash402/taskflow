@@ -42,11 +42,22 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // LOOP Brand accent colors
+        loop: {
+          mint: "hsl(var(--loop-mint))",
+          ultraviolet: "hsl(var(--loop-ultraviolet))",
+          glow: "hsl(var(--loop-glow))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      animation: {
+        'flow': 'flow 4s ease-in-out infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
+        'loop-fade-in': 'loopFadeIn 0.5s ease-out',
       },
     },
   },

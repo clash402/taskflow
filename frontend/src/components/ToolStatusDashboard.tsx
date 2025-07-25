@@ -16,13 +16,13 @@ export const ToolStatusDashboard: React.FC<ToolStatusDashboardProps> = ({
 }) => {
   const getStatusColor = (status: ToolStatus['status']) => {
     switch (status) {
-      case 'available': return 'text-green-600 bg-green-50 border-green-200';
-      case 'in_use': return 'text-blue-600 bg-blue-50 border-blue-200';
-      case 'success': return 'text-green-600 bg-green-50 border-green-200';
-      case 'error': return 'text-red-600 bg-red-50 border-red-200';
-      case 'disabled': return 'text-gray-600 bg-gray-50 border-gray-200';
-      case 'not_configured': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      case 'available': return 'text-green-700 bg-green-50/50 border-green-200 dark:text-green-300 dark:bg-green-900/10 dark:border-green-800';
+      case 'in_use': return 'text-accent bg-accent/10 border-accent/20';
+      case 'success': return 'text-green-700 bg-green-50/50 border-green-200 dark:text-green-300 dark:bg-green-900/10 dark:border-green-800';
+      case 'error': return 'text-destructive bg-destructive/10 border-destructive/20';
+      case 'disabled': return 'text-muted-foreground bg-muted border-border';
+      case 'not_configured': return 'text-amber-700 bg-amber-50/50 border-amber-200 dark:text-amber-300 dark:bg-amber-900/10 dark:border-amber-800';
+      default: return 'text-muted-foreground bg-muted border-border';
     }
   };
 
@@ -48,7 +48,7 @@ export const ToolStatusDashboard: React.FC<ToolStatusDashboardProps> = ({
         {tools.map((tool) => (
           <div
             key={tool.id}
-            className={`p-3 rounded-lg border transition-all duration-200 hover:shadow-sm ${getStatusColor(tool.status)}`}
+            className={`p-3 rounded-xl border transition-all duration-200 hover:shadow-sm ${getStatusColor(tool.status)}`}
           >
             <div className="flex items-start justify-between mb-2">
               <div className="flex flex-col min-w-0">
@@ -57,12 +57,12 @@ export const ToolStatusDashboard: React.FC<ToolStatusDashboardProps> = ({
                   <span className="font-medium text-sm truncate">{tool.name}</span>
                 </div>
                 {tool.isDemoMode && (
-                  <div className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded mt-1 w-fit">
+                  <div className="text-xs bg-accent/10 text-accent px-2 py-1 rounded-full border border-accent/20 mt-1 w-fit">
                     Demo Mode
                   </div>
                 )}
                 {!tool.isConfigured && (
-                  <div className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded mt-1 w-fit flex items-center space-x-1">
+                  <div className="text-xs bg-destructive/10 text-destructive px-2 py-1 rounded-full border border-destructive/20 mt-1 w-fit flex items-center space-x-1">
                     <span>⚠️</span>
                     <span>Not Configured</span>
                   </div>
@@ -72,22 +72,22 @@ export const ToolStatusDashboard: React.FC<ToolStatusDashboardProps> = ({
             </div>
             <div className="space-y-1">
               <div className="flex justify-between text-xs">
-                <span>Calls:</span>
-                <span className="font-mono">{tool.callCount}</span>
+                <span className="text-muted-foreground">Calls:</span>
+                <span className="font-mono text-foreground">{tool.callCount}</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span>Success Rate:</span>
-                <span className="font-mono">
+                <span className="text-muted-foreground">Success Rate:</span>
+                <span className="font-mono text-foreground">
                   {tool.callCount > 0 ? Math.round((tool.successCount / tool.callCount) * 100) : 0}%
                 </span>
               </div>
               {tool.errorMessage && (
-                <div className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded truncate mt-1" title={tool.errorMessage}>
+                <div className="text-xs bg-destructive/10 text-destructive px-2 py-1 rounded-lg border border-destructive/20 truncate mt-1" title={tool.errorMessage}>
                   {tool.errorMessage}
                 </div>
               )}
               {tool.lastUsed && (
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-muted-foreground">
                   Last used: {new Date(tool.lastUsed).toLocaleTimeString()}
                 </div>
               )}

@@ -11,12 +11,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) =
     <>
       {/* Mobile Overlay Sidebar */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-30 z-40 transition-opacity duration-200 ${isOpen ? 'block sm:hidden' : 'hidden'}`}
+        className={`fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-opacity duration-200 ${isOpen ? 'block sm:hidden' : 'hidden'}`}
         onClick={onClose}
         aria-hidden="true"
       />
       <aside
-        className={`fixed top-0 left-0 h-full w-72 bg-white border-r border-gray-200 z-50 transform transition-transform duration-200 flex flex-col block sm:hidden
+        className={`fixed top-0 left-0 h-full w-72 bg-card/95 backdrop-blur-md border-r border-border/50 z-50 transform transition-transform duration-200 flex flex-col block sm:hidden
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
         style={{ maxWidth: 320 }}
@@ -26,10 +26,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) =
         <div className="flex justify-end p-2">
           <button
             onClick={onClose}
-            className="p-2 rounded hover:bg-gray-100 focus:outline-none"
+            className="p-2 rounded-lg hover:bg-accent/10 focus:outline-none transition-all duration-200"
             aria-label="Close sidebar"
           >
-            <span className="text-2xl">×</span>
+            <span className="text-2xl text-muted-foreground hover:text-foreground">×</span>
           </button>
         </div>
         <div className="p-4 flex-1 overflow-y-auto h-full">
@@ -38,7 +38,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) =
       </aside>
       {/* Desktop Sidebar */}
       <aside
-        className="hidden sm:flex flex-col h-full w-72 bg-white border-r border-gray-200"
+        className="hidden sm:flex flex-col h-full w-72 bg-card/80 backdrop-blur-md border-r border-border/50"
         style={{ maxWidth: 320 }}
         aria-label="Sidebar"
       >

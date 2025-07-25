@@ -48,8 +48,11 @@ export const PromptBox: React.FC<PromptBoxProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="taskflow-card">
-      <h2 className="text-xl font-semibold mb-4">Create New Task</h2>
+    <div className="loop-card">
+      <div className="flex items-center space-x-2 mb-4">
+        <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+        <h2 className="text-xl font-semibold text-foreground">Create New Task</h2>
+      </div>
       <form onSubmit={handleSubmit} className="w-full">
         <div className="flex flex-col space-y-4">
           <textarea
@@ -58,12 +61,12 @@ export const PromptBox: React.FC<PromptBoxProps> = ({ onSubmit }) => {
             onChange={handleTextareaChange}
             onKeyDown={handleKeyDown}
             placeholder="Enter your task prompt here..."
-            className="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[44px] max-h-[300px] overflow-y-auto"
+            className="loop-textarea min-h-[44px] max-h-[300px] overflow-y-auto"
             rows={1}
           />
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            className="loop-button-accent w-full px-6 py-3 font-medium"
           >
             Submit Task
           </button>

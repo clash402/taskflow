@@ -3,48 +3,60 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 222.2 84% 4.9%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96%;
-  --accent-foreground: 222.2 84% 4.9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
-  --radius: 0.5rem;
+  /* LOOP Brand Colors - Cool neutrals with electric blue accents */
+  --background: 210 40% 98%; /* Cool white */
+  --foreground: 220 13% 18%; /* Graphite */
+  --card: 0 0% 100%; /* Pure white */
+  --card-foreground: 220 13% 18%; /* Graphite */
+  --popover: 0 0% 100%; /* Pure white */
+  --popover-foreground: 220 13% 18%; /* Graphite */
+  --primary: 220 13% 18%; /* Graphite */
+  --primary-foreground: 210 40% 98%; /* Cool white */
+  --secondary: 220 14% 96%; /* Light slate */
+  --secondary-foreground: 220 13% 18%; /* Graphite */
+  --muted: 220 14% 96%; /* Light slate */
+  --muted-foreground: 220 9% 46%; /* Medium slate */
+  --accent: 199 89% 48%; /* Electric blue */
+  --accent-foreground: 210 40% 98%; /* Cool white */
+  --destructive: 0 84% 60%; /* Red */
+  --destructive-foreground: 210 40% 98%; /* Cool white */
+  --border: 220 13% 91%; /* Light graphite */
+  --input: 220 13% 91%; /* Light graphite */
+  --ring: 199 89% 48%; /* Electric blue */
+  --radius: 0.75rem; /* Slightly more rounded for modern feel */
+  
+  /* LOOP Brand Accent Colors */
+  --loop-mint: 160 84% 39%; /* Mint green */
+  --loop-ultraviolet: 250 95% 60%; /* Ultraviolet */
+  --loop-glow: 199 89% 48%; /* Electric blue glow */
 }
 
 .dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 84% 4.9%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+  /* Dark mode - Deep navy with glowing accents */
+  --background: 220 26% 14%; /* Deep navy */
+  --foreground: 210 40% 98%; /* Cool white */
+  --card: 220 26% 18%; /* Slightly lighter navy */
+  --card-foreground: 210 40% 98%; /* Cool white */
+  --popover: 220 26% 18%; /* Slightly lighter navy */
+  --popover-foreground: 210 40% 98%; /* Cool white */
+  --primary: 210 40% 98%; /* Cool white */
+  --primary-foreground: 220 26% 14%; /* Deep navy */
+  --secondary: 220 26% 22%; /* Medium navy */
+  --secondary-foreground: 210 40% 98%; /* Cool white */
+  --muted: 220 26% 22%; /* Medium navy */
+  --muted-foreground: 220 9% 65%; /* Light slate */
+  --accent: 199 89% 60%; /* Brighter electric blue for dark mode */
+  --accent-foreground: 220 26% 14%; /* Deep navy */
+  --destructive: 0 63% 31%; /* Dark red */
+  --destructive-foreground: 210 40% 98%; /* Cool white */
+  --border: 220 26% 25%; /* Medium navy border */
+  --input: 220 26% 25%; /* Medium navy input */
+  --ring: 199 89% 60%; /* Brighter electric blue ring */
+  
+  /* Dark mode accent colors */
+  --loop-mint: 160 84% 45%; /* Brighter mint for dark mode */
+  --loop-ultraviolet: 250 95% 70%; /* Brighter ultraviolet for dark mode */
+  --loop-glow: 199 89% 60%; /* Brighter electric blue glow */
 }
 
 @layer base {
@@ -53,61 +65,88 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-/* Custom TaskFlow styles */
+/* LOOP Brand Custom Styles */
 @layer components {
-  .taskflow-container {
+  .loop-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  .taskflow-card {
-    @apply bg-card text-card-foreground rounded-lg shadow-sm border p-6;
+  .loop-card {
+    @apply bg-card text-card-foreground rounded-xl shadow-sm border border-border/50 p-6 backdrop-blur-sm;
   }
 
-  .taskflow-button {
-    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed;
+  .loop-button {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200;
   }
 
-  .taskflow-button-secondary {
-    @apply inline-flex items-center px-4 py-2 border border-input text-sm font-medium rounded-md text-foreground bg-background hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring;
+  .loop-button-accent {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-accent-foreground bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200;
   }
 
-  .taskflow-input {
-    @apply block w-full px-3 py-2 border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-ring focus:border-ring sm:text-sm;
+  .loop-button-secondary {
+    @apply inline-flex items-center px-4 py-2 border border-input text-sm font-medium rounded-lg text-foreground bg-background hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-all duration-200;
   }
 
-  .taskflow-textarea {
-    @apply block w-full px-3 py-2 border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-ring focus:border-ring sm:text-sm resize-none;
+  .loop-input {
+    @apply block w-full px-3 py-2 border border-input rounded-lg shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring sm:text-sm bg-background/50 backdrop-blur-sm transition-all duration-200;
   }
 
+  .loop-textarea {
+    @apply block w-full px-3 py-2 border border-input rounded-lg shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring sm:text-sm resize-none bg-background/50 backdrop-blur-sm transition-all duration-200;
+  }
+
+  /* Status indicators with LOOP brand colors */
   .status-indicator {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
 
   .status-pending {
-    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+    @apply bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200 border border-amber-200 dark:border-amber-800;
   }
 
   .status-running {
-    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+    @apply bg-accent/20 text-accent border border-accent/30;
   }
 
   .status-completed {
-    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+    @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200 border border-green-200 dark:border-green-800;
   }
 
   .status-failed {
-    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+    @apply bg-destructive/20 text-destructive border border-destructive/30;
   }
 
   .status-cancelled {
-    @apply bg-muted text-muted-foreground;
+    @apply bg-muted text-muted-foreground border border-border;
+  }
+
+  /* LOOP Brand specific components */
+  .loop-node {
+    @apply bg-card border border-border/50 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-200;
+  }
+
+  .loop-flow-line {
+    @apply border-l-2 border-accent/30 pl-4 ml-4;
+  }
+
+  .loop-pulse {
+    @apply animate-pulse-slow;
+  }
+
+  .loop-glow {
+    @apply shadow-lg shadow-accent/20;
+  }
+
+  .loop-avatar {
+    @apply w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent/80 flex items-center justify-center text-white font-bold text-sm;
   }
 }
 
-/* Animation utilities */
+/* Enhanced Animation utilities for LOOP brand */
 @layer utilities {
   .animate-pulse-slow {
     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -117,12 +156,24 @@
     animation: bounce 2s infinite;
   }
 
+  .animate-flow {
+    animation: flow 4s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
   .fade-in {
     animation: fadeIn 0.3s ease-in-out;
   }
 
   .slide-up {
     animation: slideUp 0.3s ease-out;
+  }
+
+  .loop-fade-in {
+    animation: loopFadeIn 0.5s ease-out;
   }
 }
 
@@ -143,5 +194,36 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes flow {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px hsl(var(--loop-glow) / 0.3);
+  }
+  to {
+    box-shadow: 0 0 20px hsl(var(--loop-glow) / 0.6);
+  }
+}
+
+@keyframes loopFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

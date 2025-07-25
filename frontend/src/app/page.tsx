@@ -38,7 +38,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen h-screen">
+    <div className="flex flex-col min-h-screen h-screen bg-background">
       {/* Header */}
       <Header onReset={handleReset} />
       {/* Status Bar */}
@@ -54,7 +54,7 @@ export default function Home() {
       <div className="flex flex-1 min-h-0">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
           <div className="flex items-center justify-between mb-4">
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
               {toolStatuses.filter(t => t.status === 'success').length}/{toolStatuses.length} tools ready
             </div>
           </div>
@@ -63,13 +63,13 @@ export default function Home() {
           />
         </Sidebar>
         <main className="flex-1 h-full overflow-y-auto">
-          <div className="taskflow-container py-8">
+          <div className="loop-container py-8">
             <div className="max-w-4xl mx-auto space-y-8">
               {/* Sidebar Toggle Button (visible on mobile and desktop) */}
               <div className="block sm:hidden mb-4">
                 <button
                   onClick={() => setIsSidebarOpen(true)}
-                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none"
+                  className="loop-button-secondary"
                 >
                   <span className="mr-2">🛠️</span> Tool Status
                 </button>
@@ -83,7 +83,7 @@ export default function Home() {
               <PromptBox onSubmit={handleSubmit} />
               {/* Agent Reasoning Log */}
               {agentLog && (
-                <div className="taskflow-card">
+                <div className="loop-card loop-fade-in">
                   <AgentReasoningLog 
                     entries={agentLog.entries} 
                     isActive={agentLog.isActive}
