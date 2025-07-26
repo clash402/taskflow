@@ -8,7 +8,7 @@ import { ToolStatusDashboard } from '@/components/ToolStatusDashboard';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useTaskflow } from '@/hooks/useTaskflow';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 
 export default function Home() {
@@ -37,26 +37,35 @@ export default function Home() {
     setIsSidebarOpen(false); // Collapse sidebar when resetting
   };
 
-  // Get backend URL for display - ensure HTTPS for deployed backend
+  // Get backend URL - use production URL in deployment, localhost for development
   const getBackendUrl = () => {
-    const envUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (envUrl) {
-      // If it's the deployed backend URL, ensure it uses HTTPS
-      if (envUrl.includes('data-ghost-backend.fly.dev')) {
-        return envUrl.replace('http://', 'https://');
-      }
-      return envUrl;
+    // Check if we're in production (Vercel deployment)
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+      return 'https://taskflow-backend.fly.dev';
     }
-    return 'https://taskflow-backend.fly.dev';
+    // Local development
+    return 'http://localhost:8000';
   };
   
   const backendUrl = getBackendUrl();
   console.log('🔧 backendUrl from page.tsx:', backendUrl);
+  console.log('🔧 Current hostname:', typeof window !== 'undefined' ? window.location.hostname : 'server-side');
 
-  fetch(`${backendUrl}/health/`)
-  .then(response => response.json()) // Parse the JSON data from the response
-  .then(data => console.log('✅ Health check successful:', data))   // Handle the parsed data
-  .catch(error => console.error('❌ Error fetching data:', error)); // Handle any errors during the fetch operation
+  // Health check on component mount
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        console.log('🔍 Checking backend health...');
+        const response = await fetch(`${backendUrl}/health`);
+        const data = await response.json();
+        console.log('✅ Health check successful:', data);
+      } catch (error) {
+        console.error('❌ Health check failed:', error);
+      }
+    };
+
+    checkHealth();
+  }, [backendUrl]);
 
   return (
     <div className="flex flex-col min-h-screen h-screen bg-background">

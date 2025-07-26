@@ -1,12 +1,21 @@
-// API URL configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// API URL configuration - use production URL in deployment, localhost for development
+const getApiBaseUrl = () => {
+  // Check if we're in production (Vercel deployment)
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+    return 'https://taskflow-backend.fly.dev';
+  }
+  // Local development
+  return 'http://localhost:8000';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Debug logging for API URL
 if (typeof window !== 'undefined') {
   console.log('🔧 API Configuration:', {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    hostname: window.location.hostname,
     API_BASE_URL: API_BASE_URL,
-    isProduction: process.env.NODE_ENV === 'production'
+    isProduction: window.location.hostname !== 'localhost'
   });
 }
 
