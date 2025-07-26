@@ -14,6 +14,7 @@ primary_region = 'iad'
 
 [env]
   PORT = '8000'
+  CORS_ORIGINS = '["http://localhost:3000", "http://127.0.0.1:3000", "https://taskflow-one-gules.vercel.app"]'
 
 [[services]]
   protocol = 'tcp'

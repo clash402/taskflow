@@ -8,9 +8,8 @@ import { ToolStatusDashboard } from '@/components/ToolStatusDashboard';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useTaskflow } from '@/hooks/useTaskflow';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
-import { taskflowAPI } from '@/api/taskflow';
 
 export default function Home() {
   const { 
@@ -29,23 +28,6 @@ export default function Home() {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Health check on component mount
-  useEffect(() => {
-    const checkBackendHealth = async () => {
-      try {
-        console.log('🔍 Checking backend health...');
-        const health = await taskflowAPI.checkHealth();
-        console.log('✅ Backend health check successful:', health);
-        console.log('🌐 API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
-      } catch (error) {
-        console.error('❌ Backend health check failed:', error);
-        console.log('🌐 API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
-      }
-    };
-
-    checkBackendHealth();
-  }, []);
-
   const handleSubmit = async (prompt: string) => {
     await startTask(prompt);
   };
@@ -54,6 +36,27 @@ export default function Home() {
     resetTask();
     setIsSidebarOpen(false); // Collapse sidebar when resetting
   };
+
+  // Get backend URL for display - ensure HTTPS for deployed backend
+  const getBackendUrl = () => {
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (envUrl) {
+      // If it's the deployed backend URL, ensure it uses HTTPS
+      if (envUrl.includes('data-ghost-backend.fly.dev')) {
+        return envUrl.replace('http://', 'https://');
+      }
+      return envUrl;
+    }
+    return 'https://taskflow-backend.fly.dev';
+  };
+  
+  const backendUrl = getBackendUrl();
+  console.log('🔧 backendUrl from page.tsx:', backendUrl);
+
+  fetch(`${backendUrl}/health/`)
+  .then(response => response.json()) // Parse the JSON data from the response
+  .then(data => console.log('✅ Health check successful:', data))   // Handle the parsed data
+  .catch(error => console.error('❌ Error fetching data:', error)); // Handle any errors during the fetch operation
 
   return (
     <div className="flex flex-col min-h-screen h-screen bg-background">
