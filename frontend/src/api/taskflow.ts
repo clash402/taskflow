@@ -1,4 +1,14 @@
+// API URL configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+// Debug logging for API URL
+if (typeof window !== 'undefined') {
+  console.log('🔧 API Configuration:', {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    API_BASE_URL: API_BASE_URL,
+    isProduction: process.env.NODE_ENV === 'production'
+  });
+}
 
 export interface TokenUsage {
   prompt_tokens: number;
