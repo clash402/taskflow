@@ -32,6 +32,15 @@ export interface TaskStatus {
   token_usage?: TokenUsage;
 }
 
+export interface HealthResponse {
+  status: string;
+  services: {
+    api: string;
+    database: string;
+    ai_services: string;
+  };
+}
+
 export class TaskflowAPI {
   private baseUrl: string;
 
@@ -86,6 +95,21 @@ export class TaskflowAPI {
       }
     } catch (error) {
       console.error('Error canceling task:', error);
+      throw error;
+    }
+  }
+
+  async checkHealth(): Promise<HealthResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/health`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error checking health:', error);
       throw error;
     }
   }

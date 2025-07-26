@@ -8,8 +8,9 @@ import { ToolStatusDashboard } from '@/components/ToolStatusDashboard';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useTaskflow } from '@/hooks/useTaskflow';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/Sidebar';
+import { taskflowAPI } from '@/api/taskflow';
 
 export default function Home() {
   const { 
@@ -27,6 +28,23 @@ export default function Home() {
   } = useTaskflow();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Health check on component mount
+  useEffect(() => {
+    const checkBackendHealth = async () => {
+      try {
+        console.log('🔍 Checking backend health...');
+        const health = await taskflowAPI.checkHealth();
+        console.log('✅ Backend health check successful:', health);
+        console.log('🌐 API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
+      } catch (error) {
+        console.error('❌ Backend health check failed:', error);
+        console.log('🌐 API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
+      }
+    };
+
+    checkBackendHealth();
+  }, []);
 
   const handleSubmit = async (prompt: string) => {
     await startTask(prompt);
